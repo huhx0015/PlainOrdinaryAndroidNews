@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.ViewStub;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -12,6 +14,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends Activity {
+
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private int mApiLevel = 1;
     private ListView mListView;
@@ -26,6 +30,38 @@ public class MainActivity extends Activity {
 
         initView();
         initListView();
+
+        final Handler threadHandler = new Handler();
+
+
+        final Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                ApiClient client = new ApiClient(AppConstants.BASE_URL);
+                try {
+                    client.sendGet();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
+        Runnable networkThreadCheck = new Runnable() {
+            @Override
+            public void run() {
+                Log.d(LOG_TAG, "Thread Status: " + thread.isAlive());
+                if (!thread.isAlive()) {
+                    threadHandler.removeCallbacks(this);
+                } else {
+                    threadHandler.postDelayed(this, 100);
+                }
+            }
+        };
+
+        threadHandler.postDelayed(networkThreadCheck, 100);
     }
 
     @Override

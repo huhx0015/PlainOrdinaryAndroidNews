@@ -1,5 +1,7 @@
 package com.huhx0015.poa;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -14,6 +16,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class ApiClient {
 
     private final String USER_AGENT = "Mozilla/5.0";
+    private static final String LOG_TAG = ApiClient.class.getSimpleName();
 
     private String mUrl;
 
@@ -22,7 +25,7 @@ public class ApiClient {
     }
 
     // HTTP GET request
-    private void sendGet() throws Exception {
+    public void sendGet() throws Exception {
 
         String url = "http://www.google.com/search?q=android";
 
@@ -50,12 +53,13 @@ public class ApiClient {
         in.close();
 
         //print result
+        Log.d(LOG_TAG, response.toString());
         System.out.println(response.toString());
 
     }
 
     // HTTP POST request
-    private void sendPost() throws Exception {
+    public void sendPost() throws Exception {
 
         String url = "https://selfsolve.apple.com/wcResults.do";
         URL obj = new URL(url);
