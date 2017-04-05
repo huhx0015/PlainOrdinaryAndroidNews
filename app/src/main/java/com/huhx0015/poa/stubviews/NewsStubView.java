@@ -1,4 +1,4 @@
-package com.huhx0015.poa.stubs;
+package com.huhx0015.poa.stubviews;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * Created by Michael Yoon Huh on 4/4/2017.
  */
 
-public class NewsStub implements NewsResponseListener {
+public class NewsStubView implements NewsResponseListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -40,7 +40,7 @@ public class NewsStub implements NewsResponseListener {
     private Articles mNewsArticles;
 
     // LOGGING VARIABLES:
-    private static final String LOG_TAG = NewsStub.class.getSimpleName();
+    private static final String LOG_TAG = NewsStubView.class.getSimpleName();
 
     // VIEW VARIABLES:
     private ListView mNewsListView;
@@ -50,7 +50,7 @@ public class NewsStub implements NewsResponseListener {
 
     /** CONSTRUCTOR METHOD _____________________________________________________________________ **/
 
-    public NewsStub(ViewStub viewStub, Activity activity) {
+    public NewsStubView(ViewStub viewStub, Activity activity) {
         this.mNewsViewStub = viewStub;
         this.mActivity = activity;
     }
@@ -104,7 +104,7 @@ public class NewsStub implements NewsResponseListener {
             public void run() {
                 HttpClient newsApiClient = new HttpClient(url);
                 try {
-                    newsApiClient.sendGet(NewsStub.this, type);
+                    newsApiClient.sendGet(NewsStubView.this, type);
                 } catch (Exception e) {
                     Log.e(LOG_TAG, "ERROR: Exception encountered: " + e.getLocalizedMessage());
                     e.printStackTrace();
@@ -150,7 +150,7 @@ public class NewsStub implements NewsResponseListener {
 
     /** RECYCLE METHODS ________________________________________________________________________ **/
 
-    public void unbindView() {
+    public void deflate() {
         RecycleUtils.unbindViews(mNewsView.findViewById(R.id.view_news_layout));
     }
 }

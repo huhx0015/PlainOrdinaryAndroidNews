@@ -18,7 +18,9 @@ public class RecycleUtils {
     public static void unbindViews(View view) {
 
         // If the View object's background is not null, a Callback is set to render them null.
-        if (view.getBackground() != null) { view.getBackground().setCallback(null); }
+        if (view != null && view.getBackground() != null) {
+            view.getBackground().setCallback(null);
+        }
 
         if (view instanceof ViewGroup && !(view instanceof AdapterView)) {
 

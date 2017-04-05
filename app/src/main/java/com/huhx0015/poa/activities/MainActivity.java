@@ -2,11 +2,12 @@ package com.huhx0015.poa.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewStub;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.huhx0015.poa.utils.RecycleUtils;
-import com.huhx0015.poa.stubs.NewsStub;
+import com.huhx0015.poa.stubviews.NewsStubView;
 import com.huhx0015.poa.R;
 import com.huhx0015.poa.views.Toolbar;
 import java.util.LinkedList;
@@ -21,6 +22,7 @@ public class MainActivity extends Activity {
 
     // VIEW VARIABLES:
     private ListView mListView;
+    private NewsStubView mNewsView;
     private Toolbar mToolbar;
     private ViewStub mViewStub;
 
@@ -68,10 +70,27 @@ public class MainActivity extends Activity {
     }
 
     private void initNews() {
-        NewsStub newsView = new NewsStub(mViewStub, this);
-        newsView.inflateView();
+        mNewsView = new NewsStubView(mViewStub, this);
+        mNewsView.inflateView();
+        mNewsView.requestNews("the-next-web", this);
 
-        newsView.requestNews("the-next-web", this);
+        mToolbar.setToolbarActionVisibility(true);
+        mToolbar.setToolbarActionListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeNews();
+            }
+        });
+        mViewStub.setVisibility(View.VISIBLE);
         //newsView.requestSources();
+    }
+
+    private void removeNews() {
+        mNewsView.deflate();
+        mNewsView = null;
+
+        mToolbar.setToolbarActionVisibility(false);
+        mToolbar.setToolbarActionListener(null);
+        mViewStub.setVisibility(View.GONE);
     }
 }

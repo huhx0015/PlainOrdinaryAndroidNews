@@ -52,4 +52,16 @@ public class Toolbar extends RelativeLayout {
     public void setToolbarTitle(String name) {
         mToolbarTitle.setText(name);
     }
+
+    public void setToolbarActionVisibility(boolean isVisible) {
+        if (isVisible) {
+            mActionButton.setVisibility(View.VISIBLE);
+        } else {
+            mActionButton.setVisibility(View.GONE);
+        }
+    }
+
+    public void setToolbarActionListener(OnClickListener listener) {
+        mActionButton.setOnClickListener(listener);
+    }
 }
