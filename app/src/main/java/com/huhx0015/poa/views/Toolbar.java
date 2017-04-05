@@ -1,4 +1,4 @@
-package com.huhx0015.poa;
+package com.huhx0015.poa.views;
 
 import android.annotation.TargetApi;
 import android.content.Context;

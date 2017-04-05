@@ -1,15 +1,18 @@
-package com.huhx0015.poa;
+package com.huhx0015.poa.activities;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.ViewStub;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.huhx0015.poa.views.NewsView;
+import com.huhx0015.poa.R;
+import com.huhx0015.poa.utils.VersionUtils;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,37 +34,7 @@ public class MainActivity extends Activity {
         initView();
         initListView();
 
-        final Handler threadHandler = new Handler();
-
-
-        final Thread thread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                ApiClient client = new ApiClient(AppConstants.BASE_URL);
-                try {
-                    client.sendGet();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
-
-        Runnable networkThreadCheck = new Runnable() {
-            @Override
-            public void run() {
-                Log.d(LOG_TAG, "Thread Status: " + thread.isAlive());
-                if (!thread.isAlive()) {
-                    threadHandler.removeCallbacks(this);
-                } else {
-                    threadHandler.postDelayed(this, 100);
-                }
-            }
-        };
-
-        threadHandler.postDelayed(networkThreadCheck, 100);
+        initNews();
     }
 
     @Override
@@ -83,6 +56,16 @@ public class MainActivity extends Activity {
 
         mListView.setAdapter(nodeAdapter);
     }
+
+    private void initNews() {
+        NewsView newsView = new NewsView(this);
+        newsView.setViewStub(mViewStub);
+        newsView.inflateView();
+
+        newsView.requestNews("the-next-web", this);
+        //newsView.requestSources();
+    }
+
 
     @TargetApi(Build.VERSION_CODES.CUPCAKE)
     class NetworkDataTask extends AsyncTask<String, Void, String> {

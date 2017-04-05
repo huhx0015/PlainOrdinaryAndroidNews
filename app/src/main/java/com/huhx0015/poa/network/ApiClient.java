@@ -1,7 +1,9 @@
-package com.huhx0015.poa;
+package com.huhx0015.poa.network;
 
 import android.util.Log;
-
+import com.huhx0015.poa.constants.AppConstants;
+import com.huhx0015.poa.interfaces.NewsResponseListener;
+import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -15,7 +17,6 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class ApiClient {
 
-    private final String USER_AGENT = "Mozilla/5.0";
     private static final String LOG_TAG = ApiClient.class.getSimpleName();
 
     private String mUrl;
@@ -25,25 +26,23 @@ public class ApiClient {
     }
 
     // HTTP GET request
-    public void sendGet() throws Exception {
+    public void sendGet(NewsResponseListener listener, String type) throws Exception {
 
-        String url = "http://www.google.com/search?q=android";
-
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        URL obj = new URL(mUrl);
+        HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
 
         // optional default is GET
-        con.setRequestMethod("GET");
+        connection.setRequestMethod(AppConstants.HTTP_GET);
 
         //add request header
-        con.setRequestProperty("User-Agent", USER_AGENT);
+        connection.setRequestProperty(AppConstants.HTTP_USER_AGENT, AppConstants.HTTP_USER_AGENT_ID);
 
-        int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + url);
+        int responseCode = connection.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + mUrl);
         System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
+                new InputStreamReader(connection.getInputStream()));
         String inputLine;
         StringBuffer response = new StringBuffer();
 
@@ -56,6 +55,10 @@ public class ApiClient {
         Log.d(LOG_TAG, response.toString());
         System.out.println(response.toString());
 
+        JSONObject jsonObject = new JSONObject(response.toString());
+        Log.d(LOG_TAG, "Conversion: " + jsonObject.getString("status"));
+
+        listener.onNewsGetResponse(response.toString(), type);
     }
 
     // HTTP POST request
@@ -67,7 +70,7 @@ public class ApiClient {
 
         //add reuqest header
         con.setRequestMethod("POST");
-        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty(AppConstants.HTTP_USER_AGENT, AppConstants.HTTP_USER_AGENT_ID);
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
         String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
