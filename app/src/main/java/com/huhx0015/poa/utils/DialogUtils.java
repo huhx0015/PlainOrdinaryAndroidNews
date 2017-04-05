@@ -15,7 +15,11 @@ import com.huhx0015.poa.R;
 
 public class DialogUtils {
 
+    /** CLASS VARIABLES ________________________________________________________________________ **/
+
     private static final String LOG_TAG = DialogUtils.class.getSimpleName();
+
+    /** DIALOG METHODS _________________________________________________________________________ **/
 
     public static void displayAlertDialog(String title, String message, Context context) {
         new AlertDialog.Builder(context)

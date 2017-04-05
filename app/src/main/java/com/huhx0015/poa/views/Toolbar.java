@@ -17,8 +17,12 @@ import com.huhx0015.poa.R;
 
 public class Toolbar extends RelativeLayout {
 
+    /** CLASS VARIABLES ________________________________________________________________________ **/
+
     private ImageButton mActionButton;
     private TextView mToolbarTitle;
+
+    /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
 
     public Toolbar(Context context) {
         super(context);
@@ -41,6 +45,8 @@ public class Toolbar extends RelativeLayout {
         initView(context);
     }
 
+    /** INITIALIZATION METHODS _________________________________________________________________ **/
+
     private void initView(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View toolbarView = inflater.inflate(R.layout.view_toolbar, this, true);
@@ -48,6 +54,8 @@ public class Toolbar extends RelativeLayout {
         mActionButton = (ImageButton) toolbarView.findViewById(R.id.view_action_button);
         mToolbarTitle = (TextView) toolbarView.findViewById(R.id.view_toolbar_title);
     }
+
+    /** SET METHODS ____________________________________________________________________________ **/
 
     public void setToolbarTitle(String name) {
         mToolbarTitle.setText(name);

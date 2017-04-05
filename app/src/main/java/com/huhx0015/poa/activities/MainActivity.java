@@ -13,6 +13,10 @@ import com.huhx0015.poa.views.Toolbar;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Created by Michael Yoon Huh on 4/4/2017.
+ */
+
 public class MainActivity extends Activity {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
