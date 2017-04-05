@@ -112,7 +112,7 @@ public class NewsView implements NewsResponseListener {
         Runnable networkThreadCheck = new Runnable() {
             @Override
             public void run() {
-                Log.d(LOG_TAG, "News Request Thread Status: " + newsThread.isAlive());
+                Log.d(LOG_TAG, "Request Thread Status: " + newsThread.isAlive());
 
                 if (!newsThread.isAlive()) {
                     threadHandler.removeCallbacks(this);

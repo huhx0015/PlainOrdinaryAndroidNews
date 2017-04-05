@@ -8,6 +8,7 @@ import android.widget.ListView;
 import com.huhx0015.poa.utils.RecycleUtils;
 import com.huhx0015.poa.views.NewsView;
 import com.huhx0015.poa.R;
+import com.huhx0015.poa.views.Toolbar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class MainActivity extends Activity {
 
     // VIEW VARIABLES:
     private ListView mListView;
+    private Toolbar mToolbar;
     private ViewStub mViewStub;
 
     /** ACTIVITY LIFECYCLE METHODS _____________________________________________________________ **/
@@ -51,6 +53,7 @@ public class MainActivity extends Activity {
 
     private void initView() {
         mListView = (ListView) findViewById(R.id.main_listview);
+        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mViewStub = (ViewStub) findViewById(R.id.main_viewstub);
     }
 

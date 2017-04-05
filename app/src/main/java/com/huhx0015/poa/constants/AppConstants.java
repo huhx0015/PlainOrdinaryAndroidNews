@@ -8,6 +8,7 @@ public class AppConstants {
 
     // HTTP CONSTANTS:
     public static final String HTTP_GET = "GET";
+    public static final String HTTP_POST = "POST";
     public static final String HTTP_USER_AGENT = "User-Agent";
     public static final String HTTP_USER_AGENT_ID = "Mozilla/5.0";
     public static final int HTTP_RESPONSE_200_OK = 200;
