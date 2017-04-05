@@ -6,7 +6,7 @@ import android.view.ViewStub;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.huhx0015.poa.utils.RecycleUtils;
-import com.huhx0015.poa.views.NewsView;
+import com.huhx0015.poa.stubs.NewsStub;
 import com.huhx0015.poa.R;
 import com.huhx0015.poa.views.Toolbar;
 import java.util.LinkedList;
@@ -68,7 +68,7 @@ public class MainActivity extends Activity {
     }
 
     private void initNews() {
-        NewsView newsView = new NewsView(mViewStub, this);
+        NewsStub newsView = new NewsStub(mViewStub, this);
         newsView.inflateView();
 
         newsView.requestNews("the-next-web", this);

@@ -1,6 +1,7 @@
-package com.huhx0015.poa.views;
+package com.huhx0015.poa.stubs;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
@@ -13,6 +14,7 @@ import com.huhx0015.poa.constants.AppConstants;
 import com.huhx0015.poa.interfaces.NewsResponseListener;
 import com.huhx0015.poa.models.Articles;
 import com.huhx0015.poa.network.HttpClient;
+import com.huhx0015.poa.utils.DialogUtils;
 import com.huhx0015.poa.utils.JsonUtils;
 import com.huhx0015.poa.utils.RecycleUtils;
 import org.json.JSONException;
@@ -22,7 +24,7 @@ import org.json.JSONObject;
  * Created by Michael Yoon Huh on 4/4/2017.
  */
 
-public class NewsView implements NewsResponseListener {
+public class NewsStub implements NewsResponseListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -38,16 +40,17 @@ public class NewsView implements NewsResponseListener {
     private Articles mNewsArticles;
 
     // LOGGING VARIABLES:
-    private static final String LOG_TAG = NewsView.class.getSimpleName();
+    private static final String LOG_TAG = NewsStub.class.getSimpleName();
 
     // VIEW VARIABLES:
     private ListView mNewsListView;
+    private ProgressDialog mProgressDialog;
     private View mNewsView;
     private ViewStub mNewsViewStub;
 
     /** CONSTRUCTOR METHOD _____________________________________________________________________ **/
 
-    public NewsView(ViewStub viewStub, Activity activity) {
+    public NewsStub(ViewStub viewStub, Activity activity) {
         this.mNewsViewStub = viewStub;
         this.mActivity = activity;
     }
@@ -93,14 +96,15 @@ public class NewsView implements NewsResponseListener {
     }
 
     private synchronized void startRequest(final String url, final String type) {
-        final Handler threadHandler = new Handler();
+        mProgressDialog = DialogUtils.createProgressDialog(mActivity);
 
+        final Handler threadHandler = new Handler();
         final Thread newsThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 HttpClient newsApiClient = new HttpClient(url);
                 try {
-                    newsApiClient.sendGet(NewsView.this, type);
+                    newsApiClient.sendGet(NewsStub.this, type);
                 } catch (Exception e) {
                     Log.e(LOG_TAG, "ERROR: Exception encountered: " + e.getLocalizedMessage());
                     e.printStackTrace();
@@ -116,6 +120,7 @@ public class NewsView implements NewsResponseListener {
 
                 if (!newsThread.isAlive()) {
                     threadHandler.removeCallbacks(this);
+                    mProgressDialog.dismiss();
                 } else {
                     threadHandler.postDelayed(this, NEWS_THREAD_TIMER);
                 }
