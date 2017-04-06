@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.huhx0015.poa.R;
 import com.huhx0015.poa.adapters.ArticleAdapter;
 import com.huhx0015.poa.adapters.SourceAdapter;
@@ -52,6 +54,7 @@ public class NewsStubView implements NewsResponseListener {
     // VIEW VARIABLES:
     private ListView mNewsListView;
     private ProgressDialog mProgressDialog;
+    private TextView mNewsStatusText;
     private View mNewsView;
     private ViewStub mNewsViewStub;
 
@@ -71,6 +74,7 @@ public class NewsStubView implements NewsResponseListener {
             mNewsView = mNewsViewStub.inflate();
 
             mNewsListView = (ListView) mNewsView.findViewById(R.id.news_listview);
+            mNewsStatusText = (TextView) mNewsView.findViewById(R.id.news_status);
         }
     }
 
@@ -82,6 +86,14 @@ public class NewsStubView implements NewsResponseListener {
                 @Override
                 public void run() {
                     mNewsListView.setAdapter(articleAdapter);
+                }
+            });
+        } else {
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mNewsStatusText.setText(mActivity.getResources().getString(R.string.news_status_error));
+                    mNewsStatusText.setVisibility(View.VISIBLE);
                 }
             });
         }
@@ -96,6 +108,14 @@ public class NewsStubView implements NewsResponseListener {
                 @Override
                 public void run() {
                     mNewsListView.setAdapter(sourceAdapter);
+                }
+            });
+        } else {
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mNewsStatusText.setText(mActivity.getResources().getString(R.string.source_status_error));
+                    mNewsStatusText.setVisibility(View.VISIBLE);
                 }
             });
         }
@@ -179,6 +199,15 @@ public class NewsStubView implements NewsResponseListener {
                     Log.e(LOG_TAG, "ERROR: An exception occurred while converting response to a JSON object.");
                     e.printStackTrace();
                 }
+                break;
+            default:
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mNewsStatusText.setText(mActivity.getResources().getString(R.string.news_api_error));
+                        mNewsStatusText.setVisibility(View.VISIBLE);
+                    }
+                });
                 break;
         }
     }

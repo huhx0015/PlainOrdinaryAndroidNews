@@ -52,7 +52,6 @@ public class MainActivity extends Activity implements NewsActionListener {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (isNewsVisible) {
             removeNews();
             initSources();
@@ -71,7 +70,6 @@ public class MainActivity extends Activity implements NewsActionListener {
     @Override
     public void onNewsSourceSelected(String source) {
         Log.d(LOG_TAG, "News Source Selected: " + source);
-        
         removeNews();
         initNews(source);
     }

@@ -57,6 +57,7 @@ public class HttpClient {
 
         if (responseCode != AppConstants.HTTP_RESPONSE_200_OK) {
             Log.e(LOG_TAG, "ERROR: An invalid response from the server was received: " + responseCode);
+            listener.onNewsGetResponse(null, AppConstants.HTTP_RESPONSE_ERROR);
             return;
         }
 

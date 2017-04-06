@@ -1,3 +1,10 @@
 <resources>
+
+    <!--APPLICATION STRINGS-->
     <string name="app_name">Plain Old Android News</string>
+
+    <!--NEWS STRINGS-->
+    <string name="news_api_error">An error occurred while attempting to query for news.</string>
+    <string name="source_status_error">Unable to find any news sources.</string>
+    <string name="news_status_error">Unable to find any news from the selected source.</string>
 </resources>

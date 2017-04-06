@@ -11,6 +11,7 @@ public class AppConstants {
     public static final String HTTP_POST = "POST";
     public static final String HTTP_USER_AGENT = "User-Agent";
     public static final String HTTP_USER_AGENT_ID = "Mozilla/5.0";
+    public static final String HTTP_RESPONSE_ERROR = "HTTP_RESPONSE_ERROR";
     public static final int HTTP_RESPONSE_200_OK = 200;
 
     // NEWS API CONSTANTS:

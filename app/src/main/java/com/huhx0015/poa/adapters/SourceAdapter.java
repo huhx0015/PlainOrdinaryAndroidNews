@@ -27,6 +27,7 @@ public class SourceAdapter extends ArrayAdapter<Source> {
 
     public SourceAdapter(List<Source> sources, NewsActionListener listener, Activity activity) {
         super(activity, 0, sources);
+
         this.mListener = listener;
         this.mActivity = activity;
     }
