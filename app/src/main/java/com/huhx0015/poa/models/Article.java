@@ -16,6 +16,8 @@ public class Article implements Parcelable {
 
     /** PARCELABLE METHODS _____________________________________________________________________ **/
 
+    public Article() {}
+
     protected Article(Parcel in) {
         mAuthor = in.readString();
         mTitle = in.readString();

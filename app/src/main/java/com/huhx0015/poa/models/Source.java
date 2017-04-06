@@ -20,6 +20,8 @@ public class Source implements Parcelable {
 
     /** PARCELABLE METHODS _____________________________________________________________________ **/
 
+    public Source() {}
+
     protected Source(Parcel in) {
         mId = in.readString();
         mName = in.readString();

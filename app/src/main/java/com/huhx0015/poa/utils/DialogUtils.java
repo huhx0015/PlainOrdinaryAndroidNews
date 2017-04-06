@@ -21,15 +21,12 @@ public class DialogUtils {
 
     /** DIALOG METHODS _________________________________________________________________________ **/
 
-    public static void displayAlertDialog(String title, String message, Context context) {
+    public static void displayAlertDialog(String title, String message,
+                                          DialogInterface.OnClickListener listener, Context context) {
         new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setPositiveButton("OK", listener)
                 .create()
                 .show();
     }

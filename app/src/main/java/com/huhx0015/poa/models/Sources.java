@@ -13,6 +13,8 @@ public class Sources implements Parcelable {
 
     /** PARCELABLE METHODS _____________________________________________________________________ **/
 
+    public Sources() {}
+
     protected Sources(Parcel in) {
         mStatus = in.readString();
         mSources = in.createTypedArrayList(Source.CREATOR);

@@ -3,6 +3,13 @@
     <!--APPLICATION STRINGS-->
     <string name="app_name">Plain Old Android News</string>
 
+    <!--API KEY STRINGS-->
+    <string name="news_api_key"></string>
+
+    <!--DIALOG STRINGS-->
+    <string name="dialog_title_no_key_title">No API Key Provided</string>
+    <string name="dialog_title_no_key_message">Please provide a valid News API key in strings.xml. A key can be registered at https://newsapi.org/account.</string>
+
     <!--NEWS STRINGS-->
     <string name="news_api_error">An error occurred while attempting to query for news.</string>
     <string name="source_status_error">Unable to find any news sources.</string>

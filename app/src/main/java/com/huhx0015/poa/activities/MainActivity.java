@@ -1,12 +1,14 @@
 package com.huhx0015.poa.activities;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.RelativeLayout;
 import com.huhx0015.poa.interfaces.NewsActionListener;
+import com.huhx0015.poa.utils.DialogUtils;
 import com.huhx0015.poa.utils.RecycleUtils;
 import com.huhx0015.poa.stubviews.NewsStubView;
 import com.huhx0015.poa.R;
@@ -38,8 +40,11 @@ public class MainActivity extends Activity implements NewsActionListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initView();
-        initSources();
+
+        if (checkIfApiKeyExists()) {
+            initView();
+            initSources();
+        }
     }
 
     @Override
@@ -123,5 +128,25 @@ public class MainActivity extends Activity implements NewsActionListener {
         mToolbar.setToolbarActionVisibility(false);
         mToolbar.setToolbarActionListener(null);
         mViewStubContainer.removeAllViews();
+    }
+
+    /** MISCELLANEOUS METHODS __________________________________________________________________ **/
+
+    private boolean checkIfApiKeyExists() {
+        String newsApiKey = getString(R.string.news_api_key);
+
+        if (newsApiKey.length() < 1) {
+            DialogUtils.displayAlertDialog(getString(R.string.dialog_title_no_key_title),
+                    getString(R.string.dialog_title_no_key_message), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    }, this);
+            return false;
+        } else {
+            return true;
+        }
     }
 }

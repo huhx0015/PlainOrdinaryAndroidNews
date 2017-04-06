@@ -13,6 +13,8 @@ public class UrlsToLogos implements Parcelable {
 
     /** PARCELABLE METHODS _____________________________________________________________________ **/
 
+    public UrlsToLogos() {}
+
     protected UrlsToLogos(Parcel in) {
         mSmall = in.readString();
         mMedium = in.readString();
