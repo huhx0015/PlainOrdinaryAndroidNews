@@ -16,9 +16,13 @@ import java.util.List;
 
 public class ArticleAdapter extends ArrayAdapter<Article> {
 
-    public ArticleAdapter(Context context, List<Article> users) {
-        super(context, 0, users);
+    /** CONSTRUCTOR METHOD _____________________________________________________________________ **/
+
+    public ArticleAdapter(Context context, List<Article> articles) {
+        super(context, 0, articles);
     }
+
+    /** ADAPTER METHODS ________________________________________________________________________ **/
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

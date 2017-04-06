@@ -25,47 +25,54 @@ public class ImageLoader {
 
     /** IMAGE LOADING METHODS __________________________________________________________________ **/
 
-    public static void loadImage(final ImageView image, String imageUrl, final Activity activity) throws MalformedURLException {
-        final URL url = new URL(imageUrl);
-        final Handler threadHandler = new Handler();
+    public synchronized static void loadImage(final ImageView image, String imageUrl, final Activity activity) {
+        try {
+            final URL url = new URL(imageUrl);
+            final Handler threadHandler = new Handler();
 
-        final Thread imageThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    retrieveImage(image, url, activity);
-                } catch (Exception e) {
-                    Log.e(LOG_TAG, "ERROR: Exception encountered: " + e.getLocalizedMessage());
-                    e.printStackTrace();
+            final Thread imageThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        retrieveImage(image, url, activity);
+                    } catch (Exception e) {
+                        Log.e(LOG_TAG, "ERROR: Exception encountered: " + e.getLocalizedMessage());
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
-        imageThread.start();
+            });
+            imageThread.start();
 
-        Runnable threadCheck = new Runnable() {
-            @Override
-            public void run() {
-                Log.d(LOG_TAG, "Image Thread Status: " + imageThread.isAlive());
+            Runnable threadCheck = new Runnable() {
+                @Override
+                public void run() {
+                    Log.d(LOG_TAG, "Image Thread Status: " + imageThread.isAlive());
 
-                if (!imageThread.isAlive()) {
-                    threadHandler.removeCallbacks(this);
-                } else {
-                    threadHandler.postDelayed(this, IMAGE_THREAD_TIMER);
+                    if (!imageThread.isAlive()) {
+                        threadHandler.removeCallbacks(this);
+                    } else {
+                        threadHandler.postDelayed(this, IMAGE_THREAD_TIMER);
+                    }
                 }
-            }
-        };
-        threadHandler.postDelayed(threadCheck, IMAGE_THREAD_TIMER);
+            };
+            threadHandler.postDelayed(threadCheck, IMAGE_THREAD_TIMER);
+        } catch (MalformedURLException e) {
+            Log.e(LOG_TAG, "ERROR: Exception encountered: " + e.getLocalizedMessage());
+            e.printStackTrace();
+        }
     }
 
     private static void retrieveImage(final ImageView image, URL url, Activity activity) {
         try {
             final Bitmap bitmap = BitmapFactory.decodeStream((InputStream) url.getContent());
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    image.setImageBitmap(bitmap);
-                }
-            });
+            if (bitmap != null) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        image.setImageBitmap(bitmap);
+                    }
+                });
+            }
         } catch (IOException e) {
             Log.e(LOG_TAG, "ERROR: " + e.getLocalizedMessage());
         }

@@ -10,9 +10,12 @@ import android.view.ViewStub;
 import android.widget.ListView;
 import com.huhx0015.poa.R;
 import com.huhx0015.poa.adapters.ArticleAdapter;
+import com.huhx0015.poa.adapters.SourceAdapter;
 import com.huhx0015.poa.constants.AppConstants;
+import com.huhx0015.poa.interfaces.NewsActionListener;
 import com.huhx0015.poa.interfaces.NewsResponseListener;
 import com.huhx0015.poa.models.Articles;
+import com.huhx0015.poa.models.Sources;
 import com.huhx0015.poa.network.HttpClient;
 import com.huhx0015.poa.utils.DialogUtils;
 import com.huhx0015.poa.utils.JsonUtils;
@@ -38,6 +41,10 @@ public class NewsStubView implements NewsResponseListener {
 
     // DATA VARIABLES:
     private Articles mNewsArticles;
+    private Sources mSources;
+
+    // LISTENER VARIABLES:
+    private NewsActionListener mNewsActionListener;
 
     // LOGGING VARIABLES:
     private static final String LOG_TAG = NewsStubView.class.getSimpleName();
@@ -50,8 +57,9 @@ public class NewsStubView implements NewsResponseListener {
 
     /** CONSTRUCTOR METHOD _____________________________________________________________________ **/
 
-    public NewsStubView(ViewStub viewStub, Activity activity) {
+    public NewsStubView(ViewStub viewStub, NewsActionListener listener, Activity activity) {
         this.mNewsViewStub = viewStub;
+        this.mNewsActionListener = listener;
         this.mActivity = activity;
     }
 
@@ -66,7 +74,7 @@ public class NewsStubView implements NewsResponseListener {
         }
     }
 
-    private void initListView() {
+    private void initNewsView() {
         if (mNewsArticles != null && mNewsArticles.getArticles() != null && mNewsArticles.getArticles().size() > 0) {
             final ArticleAdapter articleAdapter = new ArticleAdapter(mActivity, mNewsArticles.getArticles());
 
@@ -79,9 +87,26 @@ public class NewsStubView implements NewsResponseListener {
         }
     }
 
+    private void initSourceView() {
+        if (mSources != null && mSources.getSources() != null && mSources.getSources().size() > 0) {
+            final SourceAdapter sourceAdapter = new SourceAdapter(mSources.getSources(),
+                    mNewsActionListener, mActivity);
+
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mNewsListView.setAdapter(sourceAdapter);
+                }
+            });
+        }
+    }
+
     /** HTTP METHODS ___________________________________________________________________________ **/
 
     public void requestNews(String query, Context context) {
+
+        Log.d(LOG_TAG, "Query: " + query);
+
         String url = AppConstants.NEWS_API_BASE_URL + AppConstants.NEWS_API_ARTICLES +
                 AppConstants.NEWS_API_SOURCE + query + AppConstants.NEWS_API_SORT_BY +
                 AppConstants.NEWS_API_LATEST +  AppConstants.NEWS_API_KEY +
@@ -139,7 +164,17 @@ public class NewsStubView implements NewsResponseListener {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     mNewsArticles = JsonUtils.articlesFromJson(jsonObject);
-                    initListView();
+                    initNewsView();
+                } catch (JSONException e) {
+                    Log.e(LOG_TAG, "ERROR: An exception occurred while converting response to a JSON object.");
+                    e.printStackTrace();
+                }
+                break;
+            case TYPE_SOURCES:
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    mSources = JsonUtils.sourcesFromJson(jsonObject);
+                    initSourceView();
                 } catch (JSONException e) {
                     Log.e(LOG_TAG, "ERROR: An exception occurred while converting response to a JSON object.");
                     e.printStackTrace();

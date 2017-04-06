@@ -3,6 +3,9 @@ package com.huhx0015.poa.utils;
 import android.util.Log;
 import com.huhx0015.poa.models.Article;
 import com.huhx0015.poa.models.Articles;
+import com.huhx0015.poa.models.Source;
+import com.huhx0015.poa.models.Sources;
+import com.huhx0015.poa.models.UrlsToLogos;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,5 +75,84 @@ public class JsonUtils {
         }
 
         return article;
+    }
+
+    public static Sources sourcesFromJson(JSONObject jsonObject) {
+        Sources sources = new Sources();
+
+        try {
+            String status = jsonObject.getString("status");
+            sources.setStatus(status);
+
+            JSONArray sourceArray = jsonObject.getJSONArray("sources");
+            List<Source> sourceList = new ArrayList<>();
+            for (int index = 0; index < sourceArray.length(); index++) {
+                sourceList.add(sourceFromJson(sourceArray.getJSONObject(index)));
+            }
+            sources.setSources(sourceList);
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "ERROR: An error occurred while deserializing JSON object.");
+            e.printStackTrace();
+        }
+
+        return sources;
+    }
+
+    public static Source sourceFromJson(JSONObject jsonObject) {
+        Source source = new Source();
+
+        try {
+            String id = jsonObject.getString("id");
+            String name = jsonObject.getString("name");
+            String description = jsonObject.getString("description");
+            String url = jsonObject.getString("url");
+            String category = jsonObject.getString("category");
+            String language = jsonObject.getString("language");
+            String country = jsonObject.getString("country");
+
+            source.setId(id);
+            source.setName(name);
+            source.setDescription(description);
+            source.setUrl(url);
+            source.setCategory(category);
+            source.setLanguage(language);
+            source.setCountry(country);
+
+            JSONObject urlsToLogoObject = jsonObject.getJSONObject("urlsToLogos");
+            UrlsToLogos urlsToLogos = urlsToLogosFromJson(urlsToLogoObject);
+            source.setUrlsToLogos(urlsToLogos);
+
+            JSONArray sortBysAvailableArray = jsonObject.getJSONArray("sortBysAvailable");
+            List<String> sortBysAvailableList = new ArrayList<>();
+            for (int index = 0; index < sortBysAvailableArray.length(); index++) {
+                sortBysAvailableList.add(sortBysAvailableArray.getString(index));
+            }
+            source.setSortBysAvailable(sortBysAvailableList);
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "ERROR: An error occurred while deserializing JSON object.");
+            e.printStackTrace();
+        }
+
+        return source;
+    }
+
+    private static UrlsToLogos urlsToLogosFromJson(JSONObject jsonObject) {
+        UrlsToLogos urlsToLogos = new UrlsToLogos();
+
+        try {
+            String small = jsonObject.getString("small");
+            String medium = jsonObject.getString("medium");
+            String large = jsonObject.getString("large");
+
+            urlsToLogos.setSmall(small);
+            urlsToLogos.setMedium(medium);
+            urlsToLogos.setLarge(large);
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "ERROR: An error occurred while deserializing JSON object.");
+            e.printStackTrace();
+        }
+
+        return urlsToLogos;
     }
 }

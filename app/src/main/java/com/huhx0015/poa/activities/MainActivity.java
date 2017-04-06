@@ -2,33 +2,35 @@ package com.huhx0015.poa.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.RelativeLayout;
+import com.huhx0015.poa.interfaces.NewsActionListener;
 import com.huhx0015.poa.utils.RecycleUtils;
 import com.huhx0015.poa.stubviews.NewsStubView;
 import com.huhx0015.poa.R;
 import com.huhx0015.poa.views.Toolbar;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by Michael Yoon Huh on 4/4/2017.
  */
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements NewsActionListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
+
+    // DATA VARIABLES:
+    private String mCurrentSource;
 
     // LOGGING VARIABLES:
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     // VIEW VARIABLES:
-    private ListView mListView;
+    private boolean isNewsVisible = false;
     private NewsStubView mNewsView;
+    private RelativeLayout mViewStubContainer;
     private Toolbar mToolbar;
-    private ViewStub mViewStub;
 
     /** ACTIVITY LIFECYCLE METHODS _____________________________________________________________ **/
 
@@ -36,10 +38,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initView();
-        initListView();
-        initNews();
+        initSources();
     }
 
     @Override
@@ -51,50 +51,79 @@ public class MainActivity extends Activity {
     /** ACTIVITY EXTENSION METHODS _____________________________________________________________ **/
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (isNewsVisible) {
+            removeNews();
+            initSources();
+        } else {
+            finish();
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
-    /** INITIALIZATION METHODS _________________________________________________________________ **/
+    /** INTERFACE METHODS ______________________________________________________________________ **/
+
+    @Override
+    public void onNewsSourceSelected(String source) {
+        Log.d(LOG_TAG, "News Source Selected: " + source);
+        
+        removeNews();
+        initNews(source);
+    }
+
+    /** LAYOUT METHODS _________________________________________________________________________ **/
 
     private void initView() {
-        mListView = (ListView) findViewById(R.id.main_listview);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mViewStub = (ViewStub) findViewById(R.id.main_viewstub);
+        mViewStubContainer = (RelativeLayout) findViewById(R.id.main_viewstub_container);
     }
 
-    private void initListView() {
-        List<String> itemList = new LinkedList<>();
-        itemList.add("Item 1");
-        itemList.add("Item 2");
+    private void initSources() {
+        ViewStub viewStub = new ViewStub(this);
+        mViewStubContainer.addView(viewStub);
 
-        ArrayAdapter<String> nodeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemList);
-
-        mListView.setAdapter(nodeAdapter);
-    }
-
-    private void initNews() {
-        mNewsView = new NewsStubView(mViewStub, this);
+        mNewsView = new NewsStubView(viewStub, this, this);
         mNewsView.inflateView();
-        mNewsView.requestNews("the-next-web", this);
+        mNewsView.requestSources();
+
+        mToolbar.setToolbarActionVisibility(false);
+        mToolbar.setToolbarActionListener(null);
+    }
+
+    private void initNews(String source) {
+        this.mCurrentSource = source;
+
+        ViewStub viewStub = new ViewStub(this);
+        mViewStubContainer.addView(viewStub);
+
+        mNewsView = new NewsStubView(viewStub, this, this);
+        mNewsView.inflateView();
+        mNewsView.requestNews(mCurrentSource, this);
+        isNewsVisible = true;
 
         mToolbar.setToolbarActionVisibility(true);
         mToolbar.setToolbarActionListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 removeNews();
+                initSources();
             }
         });
-        mViewStub.setVisibility(View.VISIBLE);
-        //newsView.requestSources();
     }
 
     private void removeNews() {
         mNewsView.deflate();
         mNewsView = null;
+        mCurrentSource = null;
+        isNewsVisible = false;
 
         mToolbar.setToolbarActionVisibility(false);
         mToolbar.setToolbarActionListener(null);
-        mViewStub.setVisibility(View.GONE);
+        mViewStubContainer.removeAllViews();
     }
 }
