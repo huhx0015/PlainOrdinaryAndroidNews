@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.huhx0015.poa.R;
 import com.huhx0015.poa.adapters.ArticleAdapter;
 import com.huhx0015.poa.adapters.SourceAdapter;
@@ -99,7 +98,7 @@ public class NewsStubView implements NewsResponseListener {
         }
     }
 
-    private void initSourceView() {
+    public void initSourceView() {
         if (mSources != null && mSources.getSources() != null && mSources.getSources().size() > 0) {
             final SourceAdapter sourceAdapter = new SourceAdapter(mSources.getSources(),
                     mNewsActionListener, mActivity);
@@ -119,6 +118,12 @@ public class NewsStubView implements NewsResponseListener {
                 }
             });
         }
+    }
+
+    /** SET METHODS ____________________________________________________________________________ **/
+
+    public void setSources(Sources source) {
+        this.mSources = source;
     }
 
     /** HTTP METHODS ___________________________________________________________________________ **/
@@ -195,6 +200,7 @@ public class NewsStubView implements NewsResponseListener {
                     JSONObject jsonObject = new JSONObject(response);
                     mSources = JsonUtils.sourcesFromJson(jsonObject);
                     initSourceView();
+                    mNewsActionListener.onNewsSourceDownloaded(mSources);
                 } catch (JSONException e) {
                     Log.e(LOG_TAG, "ERROR: An exception occurred while converting response to a JSON object.");
                     e.printStackTrace();

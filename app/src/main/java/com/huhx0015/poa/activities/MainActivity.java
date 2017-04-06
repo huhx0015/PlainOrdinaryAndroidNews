@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.RelativeLayout;
 import com.huhx0015.poa.interfaces.NewsActionListener;
+import com.huhx0015.poa.models.Sources;
 import com.huhx0015.poa.utils.DialogUtils;
 import com.huhx0015.poa.utils.RecycleUtils;
 import com.huhx0015.poa.stubviews.NewsStubView;
@@ -23,13 +24,19 @@ public class MainActivity extends Activity implements NewsActionListener {
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
     // DATA VARIABLES:
+    private Sources mSources;
     private String mCurrentSource;
 
     // LOGGING VARIABLES:
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+    // PARCELABLE VARIABLES:
+    private static final String PARCELABLE_NEWS_SOURCE = LOG_TAG + "_NEWS_SOURCE";
+    private static final String PARCELABLE_NEWS_VISIBLE = LOG_TAG + "_NEWS_VISIBLE";
+    private static final String PARCELABLE_SOURCES = LOG_TAG + "_SOURCES";
+
     // VIEW VARIABLES:
-    private boolean isNewsVisible = false;
+    private boolean mIsNewsVisible = false;
     private NewsStubView mNewsView;
     private RelativeLayout mViewStubContainer;
     private Toolbar mToolbar;
@@ -40,9 +47,19 @@ public class MainActivity extends Activity implements NewsActionListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initView();
 
-        if (checkIfApiKeyExists()) {
-            initView();
+        if (savedInstanceState != null) {
+            mCurrentSource = savedInstanceState.getString(PARCELABLE_NEWS_SOURCE);
+            mIsNewsVisible = savedInstanceState.getBoolean(PARCELABLE_NEWS_VISIBLE);
+            mSources = savedInstanceState.getParcelable(PARCELABLE_SOURCES);
+
+            if (mIsNewsVisible) {
+                initNews(mCurrentSource);
+            } else {
+                initSources();
+            }
+        } else if (checkIfApiKeyExists()) {
             initSources();
         }
     }
@@ -57,7 +74,7 @@ public class MainActivity extends Activity implements NewsActionListener {
 
     @Override
     public void onBackPressed() {
-        if (isNewsVisible) {
+        if (mIsNewsVisible) {
             removeNews();
             initSources();
         } else {
@@ -68,9 +85,17 @@ public class MainActivity extends Activity implements NewsActionListener {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putString(PARCELABLE_NEWS_SOURCE, mCurrentSource);
+        outState.putBoolean(PARCELABLE_NEWS_VISIBLE, mIsNewsVisible);
+        outState.putParcelable(PARCELABLE_SOURCES, mSources);
     }
 
     /** INTERFACE METHODS ______________________________________________________________________ **/
+
+    @Override
+    public void onNewsSourceDownloaded(Sources source) {
+        this.mSources = source;
+    }
 
     @Override
     public void onNewsSourceSelected(String source) {
@@ -92,7 +117,13 @@ public class MainActivity extends Activity implements NewsActionListener {
 
         mNewsView = new NewsStubView(viewStub, this, this);
         mNewsView.inflateView();
-        mNewsView.requestSources();
+
+        if (mSources != null) {
+            mNewsView.setSources(mSources);
+            mNewsView.initSourceView();
+        } else {
+            mNewsView.requestSources();
+        }
 
         mToolbar.setToolbarActionVisibility(false);
         mToolbar.setToolbarActionListener(null);
@@ -107,7 +138,7 @@ public class MainActivity extends Activity implements NewsActionListener {
         mNewsView = new NewsStubView(viewStub, this, this);
         mNewsView.inflateView();
         mNewsView.requestNews(mCurrentSource, this);
-        isNewsVisible = true;
+        mIsNewsVisible = true;
 
         mToolbar.setToolbarActionVisibility(true);
         mToolbar.setToolbarActionListener(new View.OnClickListener() {
@@ -123,7 +154,7 @@ public class MainActivity extends Activity implements NewsActionListener {
         mNewsView.deflate();
         mNewsView = null;
         mCurrentSource = null;
-        isNewsVisible = false;
+        mIsNewsVisible = false;
 
         mToolbar.setToolbarActionVisibility(false);
         mToolbar.setToolbarActionListener(null);
