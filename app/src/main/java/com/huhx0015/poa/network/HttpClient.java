@@ -86,8 +86,8 @@ public class HttpClient {
     }
 
     // sendPost(): Performs an HTTP POST request and sends the response back to the passed in listener.
-    public void sendPost(NewsResponseListener listener, String type) throws Exception {
-        HttpURLConnection connection = initConnection(AppConstants.HTTP_POST, "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345");
+    public void sendPost(String parameters, NewsResponseListener listener, String type) throws Exception {
+        HttpURLConnection connection = initConnection(AppConstants.HTTP_POST, parameters);
 
         Log.d(LOG_TAG, "Sending POST request to the following URL: " + mUrl);
 
