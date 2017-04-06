@@ -10,7 +10,7 @@ DEVELOPER: huhx0015
 
 Plain Old Android News: A basic Android application for viewing the latest news from various news sources using the News API service.
 
-This application was built using pure Android code, with no reliance on dependencies, external libraries, or or any APIs with minimum SDK restrictions higher than API 1 (i.e. AsyncTask, Fragments, etc.). As a result, this application is compatible with devices running Android API 1 - 25+.
+This application was built using only pure Android code as an experiment, with the goal of building a basic Android application with absolutely no reliance on any dependencies, external libraries, or APIs with minimum SDK restrictions higher than API 1 (i.e. AsyncTask, Fragments, etc.) commonly found in modern Android development. As a result, this application is compatible with devices running Android API 1 - 25+.
 
 ## Resources
 
