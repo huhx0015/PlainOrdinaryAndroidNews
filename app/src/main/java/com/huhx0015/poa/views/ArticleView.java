@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.huhx0015.poa.R;
 import com.huhx0015.poa.models.Article;
 import com.huhx0015.poa.network.ImageLoader;
+import com.huhx0015.poa.utils.IntentUtils;
 
 /**
  * Created by Michael Yoon Huh on 4/5/2017.
@@ -24,6 +26,7 @@ public class ArticleView extends RelativeLayout {
     /** CLASS VARIABLE _________________________________________________________________________ **/
 
     private ImageView mArticleImage;
+    private LinearLayout mArticleLayout;
     private TextView mArticleTitle;
     private TextView mArticleDescription;
 
@@ -57,6 +60,7 @@ public class ArticleView extends RelativeLayout {
         View articleView = inflater.inflate(R.layout.view_article_children, this, true);
 
         mArticleImage = (ImageView) articleView.findViewById(R.id.view_article_image);
+        mArticleLayout = (LinearLayout) articleView.findViewById(R.id.article_view_layout);
         mArticleTitle = (TextView) articleView.findViewById(R.id.view_article_title);
         mArticleDescription = (TextView) articleView.findViewById(R.id.view_article_description);
     }
@@ -66,7 +70,7 @@ public class ArticleView extends RelativeLayout {
         return articleView;
     }
 
-    public void setArticle(Article article, Activity activity) {
+    public void setArticle(final Article article, final Activity activity) {
         if (article != null) {
 
             if (article.getUrlToImage() != null) {
@@ -83,6 +87,15 @@ public class ArticleView extends RelativeLayout {
 
             if (article.getDescription() != null) {
                 mArticleDescription.setText(article.getDescription());
+            }
+
+            if (article.getUrl() != null) {
+                mArticleLayout.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        IntentUtils.launchBrowerIntent(article.getUrl(), activity);
+                    }
+                });
             }
         }
     }
