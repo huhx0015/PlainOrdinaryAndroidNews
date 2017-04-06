@@ -1,13 +1,11 @@
 package com.huhx0015.poa.adapters;
 
-import android.content.Context;
-import android.view.LayoutInflater;
+import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
-import com.huhx0015.poa.R;
 import com.huhx0015.poa.models.Article;
+import com.huhx0015.poa.views.ArticleView;
 import java.util.List;
 
 /**
@@ -16,10 +14,16 @@ import java.util.List;
 
 public class ArticleAdapter extends ArrayAdapter<Article> {
 
+    /** CLASS VARIABLES ________________________________________________________________________ **/
+
+    private Activity mActivity;
+
     /** CONSTRUCTOR METHOD _____________________________________________________________________ **/
 
-    public ArticleAdapter(Context context, List<Article> articles) {
-        super(context, 0, articles);
+    public ArticleAdapter(List<Article> articles, Activity activity) {
+        super(activity, 0, articles);
+
+        this.mActivity = activity;
     }
 
     /** ADAPTER METHODS ________________________________________________________________________ **/
@@ -27,31 +31,13 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        // Get the data item for this position
-        Article article = getItem(position);
+        ArticleView articleView = (ArticleView) convertView;
 
-        // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_article_item, parent, false);
+        if (null == articleView) {
+            articleView = ArticleView.inflate(parent);
         }
+        articleView.setArticle(getItem(position), mActivity);
 
-        // Lookup view for data population
-        TextView articleTitle = (TextView) convertView.findViewById(R.id.adapter_article_title);
-        TextView articleDescription = (TextView) convertView.findViewById(R.id.adapter_article_description);
-
-        // Populate the data into the template view using the data object
-        if (article != null) {
-
-            if (article.getTitle() != null) {
-                articleTitle.setText(article.getTitle());
-            }
-
-            if (article.getDescription() != null) {
-                articleDescription.setText(article.getDescription());
-            }
-        }
-
-        // Return the completed view to render on screen
-        return convertView;
+        return articleView;
     }
 }

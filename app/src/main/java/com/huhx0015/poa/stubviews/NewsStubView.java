@@ -80,7 +80,7 @@ public class NewsStubView implements NewsResponseListener {
 
     private void initNewsView() {
         if (mNewsArticles != null && mNewsArticles.getArticles() != null && mNewsArticles.getArticles().size() > 0) {
-            final ArticleAdapter articleAdapter = new ArticleAdapter(mActivity, mNewsArticles.getArticles());
+            final ArticleAdapter articleAdapter = new ArticleAdapter(mNewsArticles.getArticles(), mActivity);
 
             mActivity.runOnUiThread(new Runnable() {
                 @Override
