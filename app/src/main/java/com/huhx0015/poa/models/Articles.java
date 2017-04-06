@@ -1,8 +1,10 @@
 package com.huhx0015.poa.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.List;
 
-public class Articles {
+public class Articles implements Parcelable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -10,6 +12,40 @@ public class Articles {
     private String mSource;
     private String mSortBy;
     private List<Article> mArticles = null;
+
+    /** PARCELABLE METHODS _____________________________________________________________________ **/
+
+    protected Articles(Parcel in) {
+        mStatus = in.readString();
+        mSource = in.readString();
+        mSortBy = in.readString();
+        mArticles = in.createTypedArrayList(Article.CREATOR);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mStatus);
+        dest.writeString(mSource);
+        dest.writeString(mSortBy);
+        dest.writeTypedList(mArticles);
+    }
+
+    public static final Creator<Articles> CREATOR = new Creator<Articles>() {
+        @Override
+        public Articles createFromParcel(Parcel in) {
+            return new Articles(in);
+        }
+
+        @Override
+        public Articles[] newArray(int size) {
+            return new Articles[size];
+        }
+    };
 
     /** GET METHODS ____________________________________________________________________________ **/
 
