@@ -4,7 +4,7 @@ Plain Ordinary Android News
 DEVELOPER: huhx0015
 
 ### PLAIN ORDINARY ANDROID NEWS
-![plainoldandroidnews_preview](https://cloud.githubusercontent.com/assets/1645482/24737842/a07ed792-1a46-11e7-8e02-c3bedc164c94.gif)
+![plainordinaryandroidnews_preview](https://cloud.githubusercontent.com/assets/1645482/24815845/891dac86-1b8b-11e7-93b9-273ee31e50ce.gif)
 
 ## Description
 
