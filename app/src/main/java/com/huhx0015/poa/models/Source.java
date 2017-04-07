@@ -2,12 +2,21 @@ package com.huhx0015.poa.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Source implements Parcelable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
+    // LOGGING VARIABLES:
+    private static final String LOG_TAG = Source.class.getSimpleName();
+
+    // MODEL VARIABLES:
     private String mId;
     private String mName;
     private String mDescription;
@@ -18,9 +27,45 @@ public class Source implements Parcelable {
     private UrlsToLogos mUrlsToLogos;
     private List<String> mSortBysAvailable = null;
 
-    /** PARCELABLE METHODS _____________________________________________________________________ **/
+    /** CONSTRUCTOR METHOD _____________________________________________________________________ **/
 
-    public Source() {}
+    public Source(JSONObject jsonObject) {
+
+        try {
+            String id = jsonObject.getString("id");
+            String name = jsonObject.getString("name");
+            String description = jsonObject.getString("description");
+            String url = jsonObject.getString("url");
+            String category = jsonObject.getString("category");
+            String language = jsonObject.getString("language");
+            String country = jsonObject.getString("country");
+
+            setId(id);
+            setName(name);
+            setDescription(description);
+            setUrl(url);
+            setCategory(category);
+            setLanguage(language);
+            setCountry(country);
+
+            JSONObject urlsToLogoObject = jsonObject.getJSONObject("urlsToLogos");
+            UrlsToLogos urlsToLogos = new UrlsToLogos(urlsToLogoObject);
+            setUrlsToLogos(urlsToLogos);
+
+            JSONArray sortBysAvailableArray = jsonObject.getJSONArray("sortBysAvailable");
+            List<String> sortBysAvailableList = new ArrayList<>();
+            for (int index = 0; index < sortBysAvailableArray.length(); index++) {
+                sortBysAvailableList.add(sortBysAvailableArray.getString(index));
+            }
+            setSortBysAvailable(sortBysAvailableList);
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "ERROR: An error occurred while deserializing JSON object.");
+            e.printStackTrace();
+        }
+    }
+
+    /** PARCELABLE METHODS _____________________________________________________________________ **/
 
     protected Source(Parcel in) {
         mId = in.readString();

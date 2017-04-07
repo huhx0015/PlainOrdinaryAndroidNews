@@ -2,11 +2,18 @@ package com.huhx0015.poa.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Article implements Parcelable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
+    // LOGGING VARIABLES:
+    private static final String LOG_TAG = Article.class.getSimpleName();
+
+    // MODEL VARIABLES:
     private String mAuthor;
     private String mTitle;
     private String mDescription;
@@ -14,9 +21,31 @@ public class Article implements Parcelable {
     private String mUrlToImage;
     private String mPublishedAt;
 
-    /** PARCELABLE METHODS _____________________________________________________________________ **/
+    /** CONSTRUCTOR METHOD _____________________________________________________________________ **/
 
-    public Article() {}
+    public Article(JSONObject jsonObject) {
+
+        try {
+            String author = jsonObject.getString("author");
+            String title = jsonObject.getString("title");
+            String description = jsonObject.getString("description");
+            String url = jsonObject.getString("url");
+            String urlToImage = jsonObject.getString("urlToImage");
+            String publishedAt = jsonObject.getString("publishedAt");
+
+            setAuthor(author);
+            setTitle(title);
+            setDescription(description);
+            setUrl(url);
+            setUrlToImage(urlToImage);
+            setPublishedAt(publishedAt);
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "ERROR: An error occurred while deserializing JSON object.");
+            e.printStackTrace();
+        }
+    }
+
+    /** PARCELABLE METHODS _____________________________________________________________________ **/
 
     protected Article(Parcel in) {
         mAuthor = in.readString();

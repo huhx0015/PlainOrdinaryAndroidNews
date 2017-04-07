@@ -2,18 +2,41 @@ package com.huhx0015.poa.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class UrlsToLogos implements Parcelable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
+    // LOGGING VARIABLES:
+    private static final String LOG_TAG = UrlsToLogos.class.getSimpleName();
+
+    // MODEL VARIABLES:
     private String mSmall;
     private String mMedium;
     private String mLarge;
 
-    /** PARCELABLE METHODS _____________________________________________________________________ **/
+    /** CONSTRUCTOR METHOD _____________________________________________________________________ **/
 
-    public UrlsToLogos() {}
+    public UrlsToLogos(JSONObject jsonObject) {
+
+        try {
+            String small = jsonObject.getString("small");
+            String medium = jsonObject.getString("medium");
+            String large = jsonObject.getString("large");
+
+            setSmall(small);
+            setMedium(medium);
+            setLarge(large);
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "ERROR: An error occurred while deserializing JSON object.");
+            e.printStackTrace();
+        }
+    }
+
+    /** PARCELABLE METHODS _____________________________________________________________________ **/
 
     protected UrlsToLogos(Parcel in) {
         mSmall = in.readString();

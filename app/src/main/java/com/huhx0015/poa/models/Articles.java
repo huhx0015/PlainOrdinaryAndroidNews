@@ -2,20 +2,53 @@ package com.huhx0015.poa.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Articles implements Parcelable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
+    // LOGGING VARIABLES:
+    private static final String LOG_TAG = Articles.class.getSimpleName();
+
+    // MODEL VARIABLES:
     private String mStatus;
     private String mSource;
     private String mSortBy;
     private List<Article> mArticles = null;
 
-    /** PARCELABLE METHODS _____________________________________________________________________ **/
+    /** CLASS VARIABLES ________________________________________________________________________ **/
 
-    public Articles() {}
+    public Articles(JSONObject jsonObject) {
+
+        try {
+
+            String status = jsonObject.getString("status");
+            String source = jsonObject.getString("source");
+            String sortBy = jsonObject.getString("sortBy");
+
+            setStatus(status);
+            setSource(source);
+            setSortBy(sortBy);
+
+            JSONArray articleArray = jsonObject.getJSONArray("articles");
+            List<Article> articleList = new ArrayList<>();
+            for (int index = 0; index < articleArray.length(); index++) {
+                articleList.add(new Article(articleArray.getJSONObject(index)));
+            }
+            setArticles(articleList);
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "ERROR: An error occurred while deserializing JSON object.");
+            e.printStackTrace();
+        }
+    }
+
+    /** PARCELABLE METHODS _____________________________________________________________________ **/
 
     protected Articles(Parcel in) {
         mStatus = in.readString();

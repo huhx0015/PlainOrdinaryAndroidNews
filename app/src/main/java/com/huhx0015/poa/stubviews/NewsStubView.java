@@ -19,7 +19,6 @@ import com.huhx0015.poa.models.Articles;
 import com.huhx0015.poa.models.Sources;
 import com.huhx0015.poa.network.HttpClient;
 import com.huhx0015.poa.utils.DialogUtils;
-import com.huhx0015.poa.utils.JsonUtils;
 import com.huhx0015.poa.utils.RecycleUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -188,7 +187,7 @@ public class NewsStubView implements NewsResponseListener {
             case TYPE_ARTICLES:
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    mNewsArticles = JsonUtils.articlesFromJson(jsonObject);
+                    mNewsArticles = new Articles(jsonObject);
                     initNewsView();
                 } catch (JSONException e) {
                     Log.e(LOG_TAG, "ERROR: An exception occurred while converting response to a JSON object.");
@@ -198,7 +197,7 @@ public class NewsStubView implements NewsResponseListener {
             case TYPE_SOURCES:
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    mSources = JsonUtils.sourcesFromJson(jsonObject);
+                    mSources = new Sources(jsonObject);
                     initSourceView();
                     mNewsActionListener.onNewsSourceDownloaded(mSources);
                 } catch (JSONException e) {
