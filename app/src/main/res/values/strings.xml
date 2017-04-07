@@ -4,11 +4,13 @@
     <string name="app_name">Plain Ordinary Android News</string>
 
     <!--API KEY STRINGS-->
-    <string name="news_api_key"></string>
+    <string name="news_api_ke"></string>
 
     <!--DIALOG STRINGS-->
     <string name="dialog_title_no_key_title">No API Key Provided</string>
     <string name="dialog_title_no_key_message">Please provide a valid News API key in strings.xml. A key can be registered at https://newsapi.org/account.</string>
+    <string name="dialog_title_no_internet_title">No Internet Connection</string>
+    <string name="dialog_title_no_internet_message">No Internet connection was detected. Please check your network settings and try again.</string>
 
     <!--NEWS STRINGS-->
     <string name="news_api_error">An error occurred while attempting to query for news.</string>

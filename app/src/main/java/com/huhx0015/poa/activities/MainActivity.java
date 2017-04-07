@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.huhx0015.poa.interfaces.NewsActionListener;
 import com.huhx0015.poa.models.Sources;
 import com.huhx0015.poa.utils.DialogUtils;
+import com.huhx0015.poa.utils.NetworkUtils;
 import com.huhx0015.poa.utils.RecycleUtils;
 import com.huhx0015.poa.stubviews.NewsStubView;
 import com.huhx0015.poa.R;
@@ -59,7 +60,7 @@ public class MainActivity extends Activity implements NewsActionListener {
             } else {
                 initSources();
             }
-        } else if (checkIfApiKeyExists()) {
+        } else if (checkIfApiKeyExists() && checkIfInternetConnectionExists()) {
             initSources();
         }
     }
@@ -169,6 +170,21 @@ public class MainActivity extends Activity implements NewsActionListener {
         if (newsApiKey.length() < 1) {
             DialogUtils.displayAlertDialog(getString(R.string.dialog_title_no_key_title),
                     getString(R.string.dialog_title_no_key_message), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            finish();
+                        }
+                    }, this);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean checkIfInternetConnectionExists() {
+        if (!NetworkUtils.isNetworkAvailable(this)) {
+            DialogUtils.displayAlertDialog(getString(R.string.dialog_title_no_internet_title),
+                    getString(R.string.dialog_title_no_internet_message), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             finish();
