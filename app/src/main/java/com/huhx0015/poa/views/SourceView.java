@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import com.huhx0015.poa.R;
+import com.huhx0015.poa.interfaces.ImageLoadListener;
 import com.huhx0015.poa.interfaces.NewsActionListener;
 import com.huhx0015.poa.models.Source;
 import com.huhx0015.poa.network.ImageLoader;
@@ -19,12 +21,16 @@ import com.huhx0015.poa.network.ImageLoader;
  * Created by Michael Yoon Huh on 4/5/2017.
  */
 
-public class SourceView extends RelativeLayout {
+public class SourceView extends RelativeLayout implements ImageLoadListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
+    // LIST VARIABLES:
+    private int mPosition;
+
     // VIEW VARIABLES:
     private ImageView mLogoImage;
+    private ProgressBar mProgressBar;
 
     /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
 
@@ -55,6 +61,7 @@ public class SourceView extends RelativeLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View sourceView = inflater.inflate(R.layout.view_source_children, this, true);
         mLogoImage = (ImageView) sourceView.findViewById(R.id.view_source_logo);
+        mProgressBar = (ProgressBar) sourceView.findViewById(R.id.view_source_progress_bar);
     }
 
     public static SourceView inflate(ViewGroup parent) {
@@ -62,15 +69,23 @@ public class SourceView extends RelativeLayout {
         return sourceView;
     }
 
+    /** GET METHODS ____________________________________________________________________________ **/
+
+    public int getPosition() {
+        return mPosition;
+    }
+
     /** SET METHODS ____________________________________________________________________________ **/
 
-    public void setSource(final Source source, final NewsActionListener listener, Activity activity) {
+    public void setSource(final Source source, final NewsActionListener listener, int position, Activity activity) {
+        this.mPosition = position;
+
         if (source != null) {
 
             // LOGO IMAGE:
             if (source.getUrlsToLogos() != null && source.getUrlsToLogos().getMedium() != null) {
                 mLogoImage.setImageBitmap(null);
-                ImageLoader.loadImage(mLogoImage, source.getUrlsToLogos().getMedium(), activity);
+                ImageLoader.loadImage(mLogoImage, source.getUrlsToLogos().getMedium(), false, this, activity);
             }
 
             // LOGO LISTENER:
@@ -83,5 +98,12 @@ public class SourceView extends RelativeLayout {
                 });
             }
         }
+    }
+
+    /** INTERFACE METHODS ______________________________________________________________________ **/
+
+    @Override
+    public void onImageLoaded() {
+        mProgressBar.setVisibility(View.GONE);
     }
 }

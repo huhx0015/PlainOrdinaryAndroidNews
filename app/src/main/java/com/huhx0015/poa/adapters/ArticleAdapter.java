@@ -30,13 +30,12 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         ArticleView articleView = (ArticleView) convertView;
 
-        if (null == articleView) {
+        if (null == articleView || articleView.getPosition() != position) {
             articleView = ArticleView.inflate(parent);
         }
-        articleView.setArticle(getItem(position), mActivity);
+        articleView.setArticle(getItem(position), position, mActivity);
 
         return articleView;
     }

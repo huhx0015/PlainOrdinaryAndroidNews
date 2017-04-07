@@ -25,6 +25,10 @@ public class ArticleView extends RelativeLayout {
 
     /** CLASS VARIABLE _________________________________________________________________________ **/
 
+    // LIST VARIABLES:
+    private int mPosition;
+
+    // VIEW VARIABLES:
     private ImageView mArticleImage;
     private LinearLayout mArticleLayout;
     private TextView mArticleTitle;
@@ -70,13 +74,23 @@ public class ArticleView extends RelativeLayout {
         return articleView;
     }
 
-    public void setArticle(final Article article, final Activity activity) {
+    /** GET METHODS ____________________________________________________________________________ **/
+
+    public int getPosition() {
+        return mPosition;
+    }
+
+    /** SET METHODS ____________________________________________________________________________ **/
+
+    public void setArticle(final Article article, int position, final Activity activity) {
+        this.mPosition = position;
+
         if (article != null) {
 
             if (article.getUrlToImage() != null) {
                 mArticleImage.setVisibility(View.VISIBLE);
                 mArticleImage.setImageBitmap(null);
-                ImageLoader.loadImage(mArticleImage, article.getUrlToImage(), activity);
+                ImageLoader.loadImage(mArticleImage, article.getUrlToImage(), true, null, activity);
             } else {
                 mArticleImage.setVisibility(View.GONE);
             }

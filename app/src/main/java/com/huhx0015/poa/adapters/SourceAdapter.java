@@ -38,10 +38,10 @@ public class SourceAdapter extends ArrayAdapter<Source> {
     public View getView(int position, View convertView, ViewGroup parent) {
         SourceView sourceView = (SourceView) convertView;
 
-        if (null == sourceView) {
+        if (null == sourceView || sourceView.getPosition() != position) {
             sourceView = SourceView.inflate(parent);
         }
-        sourceView.setSource(getItem(position), mListener, mActivity);
+        sourceView.setSource(getItem(position), mListener, position, mActivity);
 
         return sourceView;
     }
