@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="toolbarColor">#D50000</color>
+    <color name="primaryColor">#D50000</color>
 </resources>

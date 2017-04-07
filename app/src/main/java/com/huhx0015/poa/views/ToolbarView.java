@@ -15,7 +15,7 @@ import com.huhx0015.poa.R;
  * Created by Michael Yoon Huh on 4/4/2017.
  */
 
-public class Toolbar extends RelativeLayout {
+public class ToolbarView extends RelativeLayout {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -24,23 +24,23 @@ public class Toolbar extends RelativeLayout {
 
     /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
 
-    public Toolbar(Context context) {
+    public ToolbarView(Context context) {
         super(context);
         initView(context);
     }
 
-    public Toolbar(Context context, AttributeSet attrs) {
+    public ToolbarView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView(context);
     }
 
-    public Toolbar(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ToolbarView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public Toolbar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ToolbarView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initView(context);
     }

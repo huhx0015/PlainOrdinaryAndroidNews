@@ -3,10 +3,14 @@ package com.huhx0015.poa.utils;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
 import com.huhx0015.poa.R;
 
 /**
@@ -22,13 +26,24 @@ public class DialogUtils {
     /** DIALOG METHODS _________________________________________________________________________ **/
 
     public static void displayAlertDialog(String title, String message,
-                                          DialogInterface.OnClickListener listener, Context context) {
-        new AlertDialog.Builder(context)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("OK", listener)
-                .create()
-                .show();
+                                          View.OnClickListener listener, Context context) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View alertDialogView = inflater.inflate(R.layout.dialog_alert, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(alertDialogView);
+
+        Button dialogPositiveButton = (Button) alertDialogView.findViewById(R.id.alert_dialog_positive_button);
+        TextView dialogTitle = (TextView) alertDialogView.findViewById(R.id.alert_dialog_title);
+        TextView dialogMessage = (TextView) alertDialogView.findViewById(R.id.alert_dialog_content);
+
+        dialogPositiveButton.setOnClickListener(listener);
+        dialogTitle.setText(title);
+        dialogMessage.setText(message);
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.show();
     }
 
     public static ProgressDialog createProgressDialog(Context context) {

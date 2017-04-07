@@ -13,7 +13,7 @@ import com.huhx0015.poa.utils.DialogUtils;
 import com.huhx0015.poa.utils.RecycleUtils;
 import com.huhx0015.poa.stubviews.NewsStubView;
 import com.huhx0015.poa.R;
-import com.huhx0015.poa.views.Toolbar;
+import com.huhx0015.poa.views.ToolbarView;
 
 /**
  * Created by Michael Yoon Huh on 4/4/2017.
@@ -39,7 +39,7 @@ public class MainActivity extends Activity implements NewsActionListener {
     private boolean mIsNewsVisible = false;
     private NewsStubView mNewsView;
     private RelativeLayout mViewStubContainer;
-    private Toolbar mToolbar;
+    private ToolbarView mToolbarView;
 
     /** ACTIVITY LIFECYCLE METHODS _____________________________________________________________ **/
 
@@ -107,7 +107,7 @@ public class MainActivity extends Activity implements NewsActionListener {
     /** LAYOUT METHODS _________________________________________________________________________ **/
 
     private void initView() {
-        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        mToolbarView = (ToolbarView) findViewById(R.id.main_toolbar);
         mViewStubContainer = (RelativeLayout) findViewById(R.id.main_viewstub_container);
     }
 
@@ -125,8 +125,8 @@ public class MainActivity extends Activity implements NewsActionListener {
             mNewsView.requestSources();
         }
 
-        mToolbar.setToolbarActionVisibility(false);
-        mToolbar.setToolbarActionListener(null);
+        mToolbarView.setToolbarActionVisibility(false);
+        mToolbarView.setToolbarActionListener(null);
     }
 
     private void initNews(String source) {
@@ -140,8 +140,8 @@ public class MainActivity extends Activity implements NewsActionListener {
         mNewsView.requestNews(mCurrentSource, this);
         mIsNewsVisible = true;
 
-        mToolbar.setToolbarActionVisibility(true);
-        mToolbar.setToolbarActionListener(new View.OnClickListener() {
+        mToolbarView.setToolbarActionVisibility(true);
+        mToolbarView.setToolbarActionListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 removeNews();
@@ -156,8 +156,8 @@ public class MainActivity extends Activity implements NewsActionListener {
         mCurrentSource = null;
         mIsNewsVisible = false;
 
-        mToolbar.setToolbarActionVisibility(false);
-        mToolbar.setToolbarActionListener(null);
+        mToolbarView.setToolbarActionVisibility(false);
+        mToolbarView.setToolbarActionListener(null);
         mViewStubContainer.removeAllViews();
     }
 
@@ -168,10 +168,9 @@ public class MainActivity extends Activity implements NewsActionListener {
 
         if (newsApiKey.length() < 1) {
             DialogUtils.displayAlertDialog(getString(R.string.dialog_title_no_key_title),
-                    getString(R.string.dialog_title_no_key_message), new DialogInterface.OnClickListener() {
+                    getString(R.string.dialog_title_no_key_message), new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+                        public void onClick(View v) {
                             finish();
                         }
                     }, this);

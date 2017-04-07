@@ -9,21 +9,21 @@ import android.graphics.Matrix;
 
 public class BitmapUtils {
 
+    /** BITMAP METHODS _________________________________________________________________________ **/
 
-    // http://stackoverflow.com/questions/4837715/how-to-resize-a-bitmap-in-android
+    // getResizedBitmap(): Generates a resized bitmap with the specified width and height.
+    // Source: http://stackoverflow.com/questions/4837715/how-to-resize-a-bitmap-in-android
     public static Bitmap getResizedBitmap(Bitmap bitmap, int newWidth, int newHeight) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
 
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
+
         Matrix matrix = new Matrix();
-        // RESIZE THE BIT MAP
         matrix.postScale(scaleWidth, scaleHeight);
 
-        // "RECREATE" THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(
-                bitmap, 0, 0, width, height, matrix, false);
+        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
         bitmap.recycle();
         return resizedBitmap;
     }

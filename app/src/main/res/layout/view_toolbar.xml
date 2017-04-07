@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    android:background="@color/toolbarColor">
+    android:background="@color/primaryColor">
 
     <ImageButton
         android:id="@+id/view_action_button"
