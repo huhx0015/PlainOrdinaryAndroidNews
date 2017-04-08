@@ -15,7 +15,7 @@ import com.huhx0015.poa.R;
 import com.huhx0015.poa.interfaces.ImageLoadListener;
 import com.huhx0015.poa.interfaces.NewsActionListener;
 import com.huhx0015.poa.models.Source;
-import com.huhx0015.poa.network.ImageLoader;
+import com.huhx0015.poa.images.ImageLoader;
 
 /**
  * Created by Michael Yoon Huh on 4/5/2017.

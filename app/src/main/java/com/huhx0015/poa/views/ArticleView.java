@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.huhx0015.poa.R;
 import com.huhx0015.poa.models.Article;
-import com.huhx0015.poa.network.ImageLoader;
+import com.huhx0015.poa.images.ImageLoader;
 import com.huhx0015.poa.utils.IntentUtils;
 
 /**

@@ -1,9 +1,8 @@
-package com.huhx0015.poa.network;
+package com.huhx0015.poa.images;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 import com.huhx0015.poa.interfaces.ImageLoadListener;
@@ -21,8 +20,7 @@ public class ImageLoader {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
-    // CONSTANTS VARIABLES:
-    private static final int IMAGE_THREAD_TIMER = 100;
+    // LOGGING VARIABLES:
     private static final String LOG_TAG = ImageLoader.class.getSimpleName();
 
     /** IMAGE LOADING METHODS __________________________________________________________________ **/
@@ -32,7 +30,6 @@ public class ImageLoader {
                                               final Activity activity) {
         try {
             final URL url = new URL(imageUrl);
-            final Handler threadHandler = new Handler();
 
             final Thread imageThread = new Thread(new Runnable() {
                 @Override
@@ -46,20 +43,6 @@ public class ImageLoader {
                 }
             });
             imageThread.start();
-
-            Runnable threadCheck = new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(LOG_TAG, "Image Thread Status: " + imageThread.isAlive());
-
-                    if (!imageThread.isAlive()) {
-                        threadHandler.removeCallbacks(this);
-                    } else {
-                        threadHandler.postDelayed(this, IMAGE_THREAD_TIMER);
-                    }
-                }
-            };
-            threadHandler.postDelayed(threadCheck, IMAGE_THREAD_TIMER);
         } catch (MalformedURLException e) {
             Log.e(LOG_TAG, "ERROR: Exception encountered: " + e.getLocalizedMessage());
             e.printStackTrace();
