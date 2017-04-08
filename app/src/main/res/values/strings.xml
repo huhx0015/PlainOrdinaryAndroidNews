@@ -4,7 +4,7 @@
     <string name="app_name">Plain Ordinary Android News</string>
 
     <!--API KEY STRINGS-->
-    <string name="news_api_ke"></string>
+    <string name="news_api_key"></string>
 
     <!--DIALOG STRINGS-->
     <string name="dialog_title_no_key_title">No API Key Provided</string>
