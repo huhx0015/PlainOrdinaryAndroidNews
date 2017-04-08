@@ -75,7 +75,7 @@ public class MainActivity extends Activity implements NewsActionListener {
     @Override
     public void onBackPressed() {
         if (mIsNewsVisible) {
-            removeNews();
+            removeViewStub();
             initSources();
         } else {
             finish();
@@ -100,7 +100,7 @@ public class MainActivity extends Activity implements NewsActionListener {
     @Override
     public void onNewsSourceSelected(String source) {
         Log.d(LOG_TAG, "News Source Selected: " + source);
-        removeNews();
+        removeViewStub();
         initNews(source);
     }
 
@@ -112,11 +112,7 @@ public class MainActivity extends Activity implements NewsActionListener {
     }
 
     private void initSources() {
-        ViewStub viewStub = new ViewStub(this);
-        mViewStubContainer.addView(viewStub);
-
-        mNewsView = new NewsStubView(viewStub, this, this);
-        mNewsView.inflateView();
+        initViewStub();
 
         if (mSources != null) {
             mNewsView.setSources(mSources);
@@ -131,12 +127,8 @@ public class MainActivity extends Activity implements NewsActionListener {
 
     private void initNews(String source) {
         this.mCurrentSource = source;
+        initViewStub();
 
-        ViewStub viewStub = new ViewStub(this);
-        mViewStubContainer.addView(viewStub);
-
-        mNewsView = new NewsStubView(viewStub, this, this);
-        mNewsView.inflateView();
         mNewsView.requestNews(mCurrentSource, this);
         mIsNewsVisible = true;
 
@@ -144,13 +136,21 @@ public class MainActivity extends Activity implements NewsActionListener {
         mToolbarView.setToolbarActionListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeNews();
+                removeViewStub();
                 initSources();
             }
         });
     }
 
-    private void removeNews() {
+    private void initViewStub() {
+        ViewStub viewStub = new ViewStub(this);
+        mViewStubContainer.addView(viewStub);
+
+        mNewsView = new NewsStubView(viewStub, this, this);
+        mNewsView.inflateView();
+    }
+
+    private void removeViewStub() {
         mNewsView.deflate();
         mNewsView = null;
         mCurrentSource = null;
